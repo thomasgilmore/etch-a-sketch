@@ -1,17 +1,37 @@
-const container = document.getElementById("container");
+let size = 16;
+let index = 0;
 
-function makeRows(rows, cols) {
-    container.style.setProperty('--grid-rows', rows);
-    container.style.setProperty('--grid-cols', cols);
-    for (i = 0; i < (rows * cols); i++) {
-        let cell = document.createElement("div");
-        container.appendChild(cell).className = "grid-item";
-    }
-    let gridSquare = document.querySelectorAll("grid-item");
-    gridSquare.addEventListener("mouseover", function (event) {
-    event.target.style.backgroundColor = "green";
-})
+document.querySelector('#reset').addEventListener('click', resetBoard);
+
+function resetBoard() {
+  let boardSize = prompt('How big will the board be? Choose between 1 and 30');
+  while (!Number.isInteger(Number(boardSize)) || Number(boardSize) > 31) {
+    boardSize = prompt('How big will the board be?');
+  }
+  size = boardSize;
+  document
+    .querySelector('#board')
+    .removeChild(document.querySelector('#board').firstChild);
+  buildBoard();
 }
 
+function buildBoard() {
+  let board = document.createElement('div');
+  for (let i = 0; i < size; i++) {
+    let row = document.createElement('div');
+    row.className = 'row';
+    for (let j = 0; j < size; j++) {
+      let box = document.createElement('div');
+      box.className = 'box';
+      box.style.backgroundColor = 'white';
+      box.addEventListener('mouseover', () => {
+        box.style.backgroundColor = 'lightblue';
+      });
+      row.appendChild(box);
+    }
+    board.appendChild(row);
+  }
+  document.querySelector('#board').appendChild(board);
+}
 
-makeRows(5, 5);
+buildBoard();
